@@ -1,0 +1,142 @@
+version: '2.0'
+services:
+  zookeeper0:
+    build:
+      context: .
+      dockerfile: zookeeper.Dockerfile
+    image: jason/zookeeper:3.4.6
+    container_name: zookeeper0
+    hostname: zookeeper0
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    expose:
+      - 2181
+      - 2888
+      - 3888
+    environment:
+      ZOOKEEPER_PORT: 2181
+      ZOOKEEPER_ID: 0
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+  zookeeper1:
+    build:
+      context: .
+      dockerfile: zookeeper.Dockerfile
+    image: jason/zookeeper:3.4.6
+    container_name: zookeeper1
+    hostname: zookeeper1
+    ports:
+      - "2182:2182"
+      - "28881:28881"
+      - "38881:38881"
+    expose:
+      - 2182
+      - 2888
+      - 3888
+    environment:
+      ZOOKEEPER_PORT: 2182
+      ZOOKEEPER_ID: 1
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+#    depends_on:
+#      - zookeeper0
+  zookeeper2:
+    build:
+      context: .
+      dockerfile: zookeeper.Dockerfile
+    image: jason/zookeeper:3.4.6
+    container_name: zookeeper2
+    hostname: zookeeper2
+    ports:
+      - "2183:2183"
+      - "28882:28882"
+      - "38882:38882"
+    expose:
+      - 2183
+      - 2888
+      - 3888
+    environment:
+      ZOOKEEPER_PORT: 2183
+      ZOOKEEPER_ID: 2
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+#    depends_on:
+#        - zookeeper1
+  kafka0:
+    build:
+      context: .
+      dockerfile: kafka.Dockerfile
+    image: jason/kafka:0.8.2.2
+    container_name: kafka0
+    hostname: kafka0
+    ports:
+      - "9092:9092"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183/kafka
+      BROKER_ID: 0
+      BROKER_PORT: 9092
+      ADVERTISED_HOST_NAME: kafka0
+      HOST_NAME: kafka0
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 9092
+#    links:
+#      - zookeeper
+  kafka1:
+    build:
+      context: .
+      dockerfile: kafka.Dockerfile
+    image: jason/kafka:0.8.2.2
+    container_name: kafka1
+    hostname: kafka1
+    ports:
+      - "9093:9093"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183/kafka
+      BROKER_ID: 1
+      BROKER_PORT: 9093
+      ADVERTISED_HOST_NAME: kafka1
+      HOST_NAME: kafka1
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 9093
+#    links:
+#      - zookeeper
+  kafka2:
+    build: .
+    build:
+      context: .
+      dockerfile: kafka.Dockerfile
+    image: jason/kafka:0.8.2.2
+    container_name: kafka2
+    hostname: kafka2
+    ports:
+      - "9094:9094"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183/kafka
+      BROKER_ID: 2
+      BROKER_PORT: 9094
+      ADVERTISED_HOST_NAME: kafka2
+      HOST_NAME: kafka2
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 9094
+#   links:
+#     - zookeeper
