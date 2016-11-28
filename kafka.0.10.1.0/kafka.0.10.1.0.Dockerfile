@@ -32,7 +32,7 @@ RUN echo "source /root/.bash_profile" > /opt/kafka/start.sh &&\
 	echo "sed -i 's%#listeners=.*$%listeners=PLAINTEXT://'$""(hostname -i)'"":9092%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
 	echo "[ ! -z $""LISTENERS"" ] && sed -i 's%listeners=.*$%listeners='$""LISTENERS'""%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
 	echo "[ ! -z $""ZOOKEEPER_SESSION_TIMEOUT"" ] && sed -i 's%zookeeper.connection.timeout.ms.*$%zookeeper.connection.timeout.ms='$""ZOOKEEPER_SESSION_TIMEOUT'""%g' /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""CONNECT_REST_PORT"" ] && echo rest.port=$""CONNECT_REST_PORT"" >> /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/connect-standalone.properties" >> /opt/kafka/start.sh &&\
+	echo "[ ! -z $""CONNECT_REST_PORT"" ] && echo rest.port=$""CONNECT_REST_PORT"" >> /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/connect-standalone.properties && echo -e '\nrest.port='$""CONNECT_REST_PORT"" >> /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/connect-distributed.properties" >> /opt/kafka/start.sh &&\
 	echo "delete.topic.enable=true" >> /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties &&\
 	echo "bin/kafka-server-start.sh config/server.properties" >> /opt/kafka/start.sh &&\
 	chmod a+x /opt/kafka/start.sh
