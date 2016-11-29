@@ -4,7 +4,7 @@ RUN mkdir /etc/yum.repos.d/backup &&\
 	mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/backup/ &&\
 	curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 
-RUN yum -y install vim lsof wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel pwgen python-pip
+RUN yum -y install nc vim lsof wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel pwgen python-pip
 
 RUN mkdir /opt/java &&\
 	wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz -P /opt/java
@@ -36,8 +36,6 @@ RUN echo "source /root/.bash_profile" > /opt/kafka/start.sh &&\
 	echo "delete.topic.enable=true" >> /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties &&\
 	echo "bin/kafka-server-start.sh config/server.properties" >> /opt/kafka/start.sh &&\
 	chmod a+x /opt/kafka/start.sh
-
-RUN yum install -y nc
 
 EXPOSE 9092
 
