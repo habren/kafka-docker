@@ -70,15 +70,18 @@ services:
     hostname: kafka0
     ports:
       - "19092:19092"
+      - "29092:29092"
       - "18083:18083"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 0
-      LISTENERS: PLAINTEXT://kafka0:19092
+      LISTENERS: PLAINTEXT://kafka0:19092,SSL://kafka0:29092
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18083
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
     depends_on:
         - zookeeper0
         - zookeeper1
@@ -96,15 +99,18 @@ services:
     hostname: kafka1
     ports:
       - "19093:19093"
+      - "29093:29093"
       - "18084:18084"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 1
-      LISTENERS: PLAINTEXT://kafka1:19093
+      LISTENERS: PLAINTEXT://kafka1:19093,SSL://kafka1:29093
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18084
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
     depends_on:
         - zookeeper0
         - zookeeper1
@@ -123,15 +129,18 @@ services:
     hostname: kafka2
     ports:
       - "19094:19094"
+      - "29094:29094"
       - "18085:18085"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 2
-      LISTENERS: PLAINTEXT://kafka2:19094
+      LISTENERS: PLAINTEXT://kafka2:19094,SSL://kafka2:29094
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18085
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
     depends_on:
         - zookeeper0
         - zookeeper1

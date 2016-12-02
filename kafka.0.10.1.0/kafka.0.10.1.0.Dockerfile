@@ -14,31 +14,22 @@ ENV KAFKA_VERSION "0.10.1.0"
 RUN mkdir /opt/kafka &&\
 	wget http://apache.fayea.com/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz -P /opt/kafka
 
+ENV JAVA_HOME "/opt/java/jdk1.8.0_102"
+
 RUN tar zxvf /opt/java/jdk-8u102-linux-x64.tar.gz -C /opt/java &&\
-	JAVA_HOME=/opt/java/jdk1.8.0_102 &&\
-	sed -i "/^PATH/i export JAVA_HOME=$JAVA_HOME" /root/.bash_profile &&\
-	sed -i "s%^PATH.*$%&:$JAVA_HOME/bin%g" /root/.bash_profile &&\
+	sed -i "/^PATH/i export JAVA_HOME="$JAVA_HOME /root/.bash_profile &&\
+	sed -i "s%^PATH.*$%&:"$JAVA_HOME"/bin%g" /root/.bash_profile &&\
 	source /root/.bash_profile
 
 RUN tar zxvf /opt/kafka/kafka*.tgz -C /opt/kafka &&\
 	sed -i 's/num.partitions.*$/num.partitions=3/g' /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties
 
-RUN echo "source /root/.bash_profile" > /opt/kafka/start.sh &&\
-	echo "cd /opt/kafka/kafka_2.11-"$KAFKA_VERSION >> /opt/kafka/start.sh &&\
-	echo "sed -i '0,/^if/s%^if%export JAVA_HOME='$""JAVA_HOME'""\nexport PATH='$""PATH'""\nif%' /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/bin/kafka-run-class.sh" >> /opt/kafka/start.sh &&\
-	#echo "sed -i 's%zookeeper.connect=.*$%zookeeper.connect=zookeeper:2181%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""ZOOKEEPER_CONNECT"" ] && sed -i 's%.*zookeeper.connect=.*$%zookeeper.connect='$""ZOOKEEPER_CONNECT'""%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""BROKER_ID"" ] && sed -i 's%broker.id=.*$%broker.id='$""BROKER_ID'""%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "sed -i 's%#listeners=.*$%listeners=PLAINTEXT://'$""(hostname -i)'"":9092%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""LISTENERS"" ] && sed -i 's%listeners=.*$%listeners='$""LISTENERS'""%g'  /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""ZOOKEEPER_SESSION_TIMEOUT"" ] && sed -i 's%zookeeper.connection.timeout.ms.*$%zookeeper.connection.timeout.ms='$""ZOOKEEPER_SESSION_TIMEOUT'""%g' /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/server.properties" >> /opt/kafka/start.sh &&\
-	echo "[ ! -z $""CONNECT_REST_PORT"" ] && echo rest.port=$""CONNECT_REST_PORT"" >> /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/connect-standalone.properties && echo -e '\nrest.port='$""CONNECT_REST_PORT"" >> /opt/kafka/kafka_2.11-"$KAFKA_VERSION"/config/connect-distributed.properties" >> /opt/kafka/start.sh &&\
-	echo "delete.topic.enable=true" >> /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties &&\
-	echo "bin/kafka-server-start.sh config/server.properties" >> /opt/kafka/start.sh &&\
-	chmod a+x /opt/kafka/start.sh
+RUN sed -i '0,/^if/s%^if%export JAVA_HOME='$JAVA_HOME'\nexport PATH=$PATH:$JAVA_HOME/bin\nif%' /opt/kafka/kafka_2.11-0.10.1.0/bin/kafka-run-class.sh
+
+COPY start_kafka.sh /opt/kafka
 
 EXPOSE 9092
 
 WORKDIR /opt/kafka/kafka_2.11-$KAFKA_VERSION
 
-ENTRYPOINT ["sh", "/opt/kafka/start.sh"]
+ENTRYPOINT ["sh", "/opt/kafka/start_kafka.sh"]
