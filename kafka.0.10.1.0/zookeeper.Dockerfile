@@ -15,7 +15,7 @@ RUN tar zxvf /opt/java/jdk-8u102-linux-x64.tar.gz -C /opt/java &&\
 	sed -i "s%^PATH.*$%&:$JAVA_HOME/bin%g" /root/.bash_profile &&\
 	source /root/.bash_profile
 
-ENV ZOOKEEPER_VERSION "3.4.6"
+ENV ZOOKEEPER_VERSION "3.4.8"
 
 RUN mkdir /opt/zookeeper &&\
 	wget http://mirror.olnevhost.net/pub/apache/zookeeper/zookeeper-$ZOOKEEPER_VERSION/zookeeper-$ZOOKEEPER_VERSION.tar.gz -P /opt/zookeeper
