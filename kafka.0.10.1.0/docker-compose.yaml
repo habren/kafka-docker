@@ -82,7 +82,7 @@ services:
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
       JMX_PORT: 12345
-      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka0"
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ca:/opt/kafka/ca
