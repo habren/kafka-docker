@@ -50,7 +50,8 @@ EOF
 	y
 EOF
 
-	echo "ssl.keystore.location=/opt/kafka/ssl/"$HOSTNAME".keystore.jks
+	echo "ssl.client.auth=required
+ssl.keystore.location=/opt/kafka/ssl/"$HOSTNAME".keystore.jks
 ssl.keystore.password="$ssl_password"
 ssl.key.password="$ssl_password"
 ssl.truststore.location=/opt/kafka/ssl/"$HOSTNAME".truststore.jks
