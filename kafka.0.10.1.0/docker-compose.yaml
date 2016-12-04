@@ -72,6 +72,7 @@ services:
       - "19092:19092"
       - "29092:29092"
       - "18083:18083"
+      - "12345:12345"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 0
@@ -79,6 +80,9 @@ services:
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18083
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12345
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka0"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ca:/opt/kafka/ca
@@ -101,6 +105,7 @@ services:
       - "19093:19093"
       - "29093:29093"
       - "18084:18084"
+      - "12346:12346"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 1
@@ -108,6 +113,9 @@ services:
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18084
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12346
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ca:/opt/kafka/ca
@@ -131,6 +139,7 @@ services:
       - "19094:19094"
       - "29094:29094"
       - "18085:18085"
+      - "12347:12347"
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
       BROKER_ID: 2
@@ -138,6 +147,9 @@ services:
       ZOOKEEPER_SESSION_TIMEOUT: 3600000
       CONNECT_REST_PORT: 18085
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12347
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka2"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ca:/opt/kafka/ca
@@ -147,5 +159,18 @@ services:
         - zookeeper2
     expose:
       - 9094
-#   links:
-#     - zookeeper
+  kafka-manager:
+    build: .
+    build:
+      context: .
+      dockerfile: kafka-manager.Dockerfile
+    image: jason/kafka-manager:1.0
+    container_name: kafka-manager
+    hostname: kafka-manager
+    ports:
+      - "38080:38080"
+    environment:
+      ZK_HOSTS: zookeeper0:12181
+      PORT: 38080
+    expose:
+      - 38080
