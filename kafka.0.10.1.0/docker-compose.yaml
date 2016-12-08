@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: zookeeper.Dockerfile
-    image: jason/zookeeper:3.4.6
+    image: jason/zookeeper:3.4.8
     container_name: zookeeper0
     hostname: zookeeper0
     ports:
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: zookeeper.Dockerfile
-    image: jason/zookeeper:3.4.6
+    image: jason/zookeeper:3.4.8
     container_name: zookeeper1
     hostname: zookeeper1
     ports:
@@ -44,7 +44,7 @@ services:
     build:
       context: .
       dockerfile: zookeeper.Dockerfile
-    image: jason/zookeeper:3.4.6
+    image: jason/zookeeper:3.4.8
     container_name: zookeeper2
     hostname: zookeeper2
     ports:
@@ -159,6 +159,107 @@ services:
         - zookeeper2
     expose:
       - 9094
+  kafka3:
+    build:
+      context: .
+      dockerfile: kafka.0.10.1.0.Dockerfile
+    image: jason/kafka:0.10.1.0
+    container_name: kafka3
+    hostname: kafka3
+    ports:
+      - "19095:19095"
+      - "29095:29095"
+      - "18086:18086"
+      - "12348:12348"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
+      BROKER_ID: 3
+      LISTENERS: PLAINTEXT://kafka3:19095,SSL://kafka3:29095
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+      CONNECT_REST_PORT: 18086
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12348
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 19095
+      - 29095
+#    links:
+#      - zookeeper
+  kafka4:
+    build:
+      context: .
+      dockerfile: kafka.0.10.1.0.Dockerfile
+    image: jason/kafka:0.10.1.0
+    container_name: kafka4
+    hostname: kafka4
+    ports:
+      - "19096:19096"
+      - "29096:29096"
+      - "18087:18087"
+      - "12349:12349"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
+      BROKER_ID: 4
+      LISTENERS: PLAINTEXT://kafka4:19096,SSL://kafka4:29096
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+      CONNECT_REST_PORT: 18087
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12349
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 29096
+      - 19096
+#    links:
+#      - zookeeper
+  kafka5:
+    build: .
+    build:
+      context: .
+      dockerfile: kafka.0.10.1.0.Dockerfile
+    image: jason/kafka:0.10.1.0
+    container_name: kafka5
+    hostname: kafka5
+    ports:
+      - "19097:19097"
+      - "29097:29097"
+      - "18088:18088"
+      - "12350:12350"
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183/kafka
+      BROKER_ID: 5
+      LISTENERS: PLAINTEXT://kafka5:19097,SSL://kafka5:29097
+      ZOOKEEPER_SESSION_TIMEOUT: 3600000
+      CONNECT_REST_PORT: 18088
+      KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
+      JMX_PORT: 12350
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka2"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ca:/opt/kafka/ca
+    depends_on:
+        - zookeeper0
+        - zookeeper1
+        - zookeeper2
+    expose:
+      - 19097
+      - 29097
   kafka-manager:
     build: .
     build:
