@@ -81,7 +81,8 @@ services:
       CONNECT_REST_PORT: 18083
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12345
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12345
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -114,7 +115,8 @@ services:
       CONNECT_REST_PORT: 18084
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12346
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12346
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -148,7 +150,8 @@ services:
       CONNECT_REST_PORT: 18085
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12347
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12347
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka2"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -179,7 +182,8 @@ services:
       CONNECT_REST_PORT: 18086
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12348
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12348
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -213,7 +217,8 @@ services:
       CONNECT_REST_PORT: 18087
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12349
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12349
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -248,7 +253,8 @@ services:
       CONNECT_REST_PORT: 18088
       KAFKA_PROPERTY_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_PROPERTY_SSL_CLIENT_AUTH: required
-      JMX_PORT: 12350
+      KAFKA_PROPERTY_DELETE_TOPIC_ENABLE: "true"
+      PORT_JMX: 12350
       KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka2"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
