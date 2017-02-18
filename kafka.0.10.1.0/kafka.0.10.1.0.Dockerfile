@@ -28,6 +28,8 @@ RUN sed -i '0,/^if/s%^if%export JAVA_HOME='$JAVA_HOME'\nexport PATH=$PATH:$JAVA_
 
 COPY start_kafka.sh /opt/kafka
 
+RUN yum install -y tcpdump dstat sysstat 
+
 EXPOSE 9092
 
 WORKDIR /opt/kafka/kafka_2.11-$KAFKA_VERSION

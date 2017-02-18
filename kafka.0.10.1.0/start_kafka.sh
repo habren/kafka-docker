@@ -9,6 +9,7 @@ sed -i 's%#listeners=.*$%listeners=PLAINTEXT://'$(hostname -i)':9092%g' config/s
 [ ! -z $LISTENERS ] && sed -i 's%listeners=.*$%listeners='$LISTENERS'%g' config/server.properties
 [ ! -z $ZOOKEEPER_SESSION_TIMEOUT ] && sed -i 's%zookeeper.connection.timeout.ms.*$%zookeeper.connection.timeout.ms='$ZOOKEEPER_SESSION_TIMEOUT'%g' config/server.properties
 [ ! -z $CONNECT_REST_PORT ] && echo rest.port=$CONNECT_REST_PORT >> /opt/kafka/kafka_2.11-0.10.1.0/config/connect-standalone.properties && echo -e '\nrest.port='$CONNECT_REST_PORT >> config/connect-distributed.properties
+[ ! -z $PORT_JMX ] && export JMX_PORT=$PORT_JMX
 popd
 
 
