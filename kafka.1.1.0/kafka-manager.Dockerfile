@@ -18,13 +18,24 @@ RUN tar zxvf /opt/java/jdk-8u172-linux-x64.tar.gz -C /opt/java &&\
 
 ENV KAFKA_MANAGER_VERSION "1.3.3.17"
 
-RUN mkdir /opt/kafka-manager &&\
-	wget https://github.com/yahoo/kafka-manager/archive/$KAFKA_MANAGER_VERSION.zip -P /opt/kafka-manager
+RUN wget https://github.com/yahoo/kafka-manager/archive/$KAFKA_MANAGER_VERSION.zip -P /opt/
 
-RUN unzip /opt/kafka-manager/$KAFKA_MANAGER_VERSION.zip -d /opt/ &&\
+RUN unzip /opt/$KAFKA_MANAGER_VERSION.zip -d /opt/ &&\
 	mv /opt/kafka-manager-$KAFKA_MANAGER_VERSION /opt/kafka-manager
 
-WORKDIR /opt/kafka-manager
+RUN cd /opt/kafka-manager &&\
+	PATH=$JAVA_HOME/bin:$PATH &&\
+	./sbt clean dist
+
+ENV PATH $JAVA_HOME/bin:$PATH
+
+RUN cp /opt/kafka-manager/target/universal/kafka-manager-$KAFKA_MANAGER_VERSION.zip /tmp/ &&\
+	rm -rf /opt/kafka-manager/ &&\
+	unzip /tmp/kafka-manager-$KAFKA_MANAGER_VERSION.zip -d /opt/ &&\
+	mv /opt/kafka-manager-$KAFKA_MANAGER_VERSION /opt/kafka-manager &&\
+	rm -rf /tmp/* /root/.sbt /root/.ivy2
+
+WORKDIR /opt/kafka-manager/
 
 ENTRYPOINT ["bin/kafka-manager", "-Dhttp.port=38080"]
 
