@@ -51,7 +51,8 @@ EOF
 	y
 EOF
 
-	echo "ssl.client.auth=required
+	echo "
+ssl.client.auth=required
 ssl.keystore.location=/opt/kafka/ssl/"$HOSTNAME".keystore.jks
 ssl.keystore.password="$ssl_password"
 ssl.key.password="$ssl_password"
