@@ -277,7 +277,7 @@ services:
     ports:
       - "38080:38080"
     environment:
-      ZK_HOSTS: zookeeper0:12181
+      ZK_HOSTS: zookeeper0:12181,zookeeper1:12182,zookeeper2:12183
       PORT: 38080
     expose:
       - 38080
