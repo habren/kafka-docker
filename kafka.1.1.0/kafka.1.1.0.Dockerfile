@@ -12,7 +12,7 @@ RUN mkdir /opt/java &&\
 ENV KAFKA_VERSION "1.1.0"
 
 RUN mkdir /opt/kafka &&\
-	wget http://apache.fayea.com/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz -P /opt/kafka
+    wget http://www-eu.apache.org/dist/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz -P /opt/kafka
 
 ENV JAVA_HOME "/opt/java/jdk1.8.0_172"
 
